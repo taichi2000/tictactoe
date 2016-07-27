@@ -8,7 +8,7 @@ public class Board {
 
     private boolean empty = true;
     private String[][] matrix = {{"", "", ""}, {"", "", ""}, {"", "", ""}};
-
+    private static int numbersOfMoves;
 
     public boolean isFinished() {
         if (allCellsAreOccupied())
@@ -29,6 +29,9 @@ public class Board {
         return true;
     }
 
+    public static int getNumbersOfMoves() {
+        return numbersOfMoves;
+    }
 
     private boolean thereIsThreeElementsInARow() {
         String pos11 = matrix[0][0];
@@ -60,6 +63,17 @@ public class Board {
         return empty;
     }
 
+    public void printBoard(){
+        for (int i = 0; i <matrix.length ; i++) {
+            System.out.print("|");
+            for (int j = 0; j <matrix.length ; j++) {
+                System.out.print(matrix[i][j]+"|");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
 
     public void move(int x, int y, String symbol) {
         if(x > matrix.length || y > matrix.length){
@@ -70,6 +84,8 @@ public class Board {
         }
 
         matrix[x - 1][y - 1] = symbol;
+
+        numbersOfMoves++;
 
         empty = false;
     }
