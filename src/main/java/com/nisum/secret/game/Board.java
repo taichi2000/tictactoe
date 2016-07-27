@@ -1,10 +1,13 @@
 package com.nisum.secret.game;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Board {
 
     private boolean empty = true;
-    private String[][] matrix = new String[3][3];
+    private String[][] matrix = {{"", "", ""}, {"", "", ""}, {"", "", ""}};
 
 
     public boolean isFinished() {
@@ -16,7 +19,14 @@ public class Board {
 
 
     private boolean allCellsAreOccupied() {
-        return false;
+        for (int i = 0; i < matrix.length; i++) {
+            List<String> fila = Arrays.asList(matrix[i]);
+            if (fila.contains("")) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
@@ -32,17 +42,17 @@ public class Board {
         String pos33 = matrix[2][2];
 
         return
-                pos11.equals(pos12) && pos11.equals(pos13) ||
-                pos21.equals(pos22) && pos21.equals(pos23) ||
-                pos31.equals(pos32) && pos31.equals(pos33) ||
-                pos11.equals(pos21) && pos11.equals(pos31) ||
-
-                pos11.equals(pos21) && pos11.equals(pos31) ||
-                pos12.equals(pos22) && pos12.equals(pos32) ||
-                pos13.equals(pos23) && pos13.equals(pos33) ||
-
-                pos11.equals(pos22) && pos11.equals(pos33) ||
-                pos31.equals(pos22) && pos31.equals(pos13);
+                //horizontal
+                pos11.equals(pos12) && pos11.equals(pos13) && !"".equals(pos11) ||
+                        pos21.equals(pos22) && pos21.equals(pos23) && !"".equals(pos21) ||
+                        pos31.equals(pos32) && pos31.equals(pos33) && !"".equals(pos31) ||
+                        //vertical
+                        pos11.equals(pos21) && pos11.equals(pos31) && !"".equals(pos11) ||
+                        pos12.equals(pos22) && pos12.equals(pos32) && !"".equals(pos12) ||
+                        pos13.equals(pos23) && pos13.equals(pos33) && !"".equals(pos13) ||
+                        //diagonal
+                        pos11.equals(pos22) && pos11.equals(pos33) && !"".equals(pos11) ||
+                        pos31.equals(pos22) && pos31.equals(pos13) && !"".equals(pos31);
     }
 
 
@@ -52,7 +62,10 @@ public class Board {
 
 
     public void move(int x, int y, String symbol) {
-        if (matrix[x - 1][y - 1] != null) {
+        if(x > matrix.length || y > matrix.length){
+            throw new IllegalMoveException();
+        }
+        if (!"".equals(matrix[x - 1][y - 1])) {
             throw new IllegalMoveException();
         }
 

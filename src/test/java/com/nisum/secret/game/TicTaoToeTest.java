@@ -21,6 +21,7 @@ public class TicTaoToeTest {
 
     @Test
     public void newBoardGameShouldBeNonFinished() throws Exception {
+        board = new Board();
         assertThat(board.isFinished(), is(false));
     }
 
@@ -87,6 +88,33 @@ public class TicTaoToeTest {
         board.move(1, 3, "X");
 
         assertThat(board.isFinished(), is(true));
+
+    }
+
+    @Test
+    public void after9MovesGameIsFinished() throws Exception {
+        /**
+         * XXO
+         * OOX
+         * XOX---
+         */
+        board.move(1, 1, "X");
+        board.move(1, 2, "X");
+        board.move(1, 3, "O");
+        board.move(2, 1, "O");
+        board.move(2, 2, "O");
+        board.move(2, 3, "X");
+        board.move(3, 1, "X");
+        board.move(3, 2, "O");
+        board.move(3, 3, "X");
+
+        assertThat(board.isFinished(), is(true));
+
+    }
+
+    @Test(expected = Board.IllegalMoveException.class)
+    public void shouldNotMoveOutOfTheBoard() throws Exception {
+        board.move(1, 4, "X");
 
     }
 }
